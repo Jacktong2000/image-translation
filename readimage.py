@@ -2,10 +2,14 @@ import json
 import requests
 from pprint import pprint
 from datetime import datetime
+import cv2
+import argparse
+import os
+
 
 
 def get_text(image):
-    image_key1='key'
+    image_key1='KEYS'
 
     headers={'Ocp-Apim-Subscription-Key' : image_key1, 'Content-Type': 'application/octet-stream'}
 
@@ -13,8 +17,16 @@ def get_text(image):
 
     params={'handwriting':'false'}
 
-    with open('static/tmp/{0}'.format(image), 'rb') as f:
+    img = cv2.imread('static/tmp/{0}'.format(image))
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    cv2.imwrite('static/tmp/gray{0}'.format(image),img)
+
+    with open('static/tmp/gray{0}'.format(image), 'rb') as f:
+    #with open(img, 'rb') as f:
         img_data=f.read()
+
+    os.system('rm static/tmp/gray{0}'.format(image))
 
     response = requests.post(image_api, headers=headers, params=params, data=img_data)
     result = response.json()
@@ -32,19 +44,23 @@ def get_text(image):
     return endtext
 
 
-def translate(text):
-    translator_key1='key'
+def translate(text, language):
+    translator_key1='KEYS'
 
     translator_api="https://api.cognitive.microsofttranslator.com/translate?api-version=3.0"
 
     translator_header={'Ocp-Apim-Subscription-Key' : translator_key1, 'Content-type':'application/json'}
 
-    t_params="&to=en"
+
+    t_params="&to={0}".format(language)
 
     translator_response = requests.post(translator_api, headers=translator_header, params=t_params, json=[{"Text":text}])
     t_result = translator_response.json()
 
     #pprint(t_result)
-    translation = t_result[0]['translations'][0]['text']
+    try:
+        translation = t_result[0]['translations'][0]['text']
+    except:
+        translation = 'You need to select a language.'
     #print(translation)
     return translation

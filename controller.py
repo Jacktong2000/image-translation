@@ -16,7 +16,8 @@ def home():
     if request.method == 'POST' and 'photo' in request.files:
         filename = photos.save(request.files['photo'])
         message = readimage.get_text(filename)
-        after_translation = readimage.translate(message)
+        lang = request.form['language']
+        after_translation = readimage.translate(message,lang)
         return render_template("index.html", message=message, translation=after_translation, image='static/tmp/{0}'.format(filename))
 
     else:
@@ -25,4 +26,4 @@ def home():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',debug=True)

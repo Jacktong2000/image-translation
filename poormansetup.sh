@@ -10,11 +10,17 @@ pip3 install Flask-Uploads
 sudo apt-get install sqlite3
 pip3 install pprint
 pip3 install schedule
+pip3 install pytesseract
 pip3 install opencv-python
+pip3 install PIL
+pip3 install textblob
 sudo apt-get install python-opencv
+sudo apt-get install tesseract-ocr
+sudo apt-get install tesseract-ocr-eng
+sudo apt-get install tesseract-ocr-jpn
+sudo apt-get install tesseract-ocr-spa
+sudo apt-get install tesseract-ocr-swe
+sudo apt-get install tesseract-ocr-deu
 sh -c 'echo "set const" >> .nanorc'
 sh -c 'echo "set tabsize 4" >> .nanorc'
 sh -c 'echo "set tabstospaces" >> .nanorc'
-#sudo apt-get -y install firewalld
-#sudo apt-get -y install ntp
-#sudo apt-get -y nginx
